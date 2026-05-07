@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="FitPro member dashboard — view your stats, training history, and upcoming sessions.">
+  <title>Dashboard | FitPro</title>
+  <link rel="stylesheet" href="../cssFile/globalStyles.css">
+</head>
+<body data-theme="dark">
+
+  <nav>
+    <a href="../index.html">Fit<span class="accent">Pro</span></a>
+    <button class="menu-toggle" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+    <ul>
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li class="dropdown">
+        <a href="#">Programs ▾</a>
+        <div class="dropdown-menu">
+          <a href="services.html">All Programs</a>
+          <a href="schedule.html">Schedule</a>
+        </div>
+      </li>
+      <li><a href="trainers.html">Trainers</a></li>
+      <li><a href="pricing.html">Pricing</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="login.html">Login</a></li>
+      <li><button onclick="location.href='signup.html'">Join Now</button></li>
+      <li><button id="theme-toggle" onclick="toggleTheme()">🌙</button></li>
+    </ul>
+  </nav>
+
+  <main class="page">
+
+    <!-- WELCOME -->
+    <section>
+      <h4>Member Dashboard</h4>
+      <h1>Welcome back, <span class="accent">John</span> 👋</h1>
+      <p>Here's a summary of your fitness journey this month.</p>
+    </section>
+
+    <!-- STAT CARDS -->
+    <div class="card-container" id="stat-cards">
+      <div class="card">
+        <div>🏋️</div>
+        <h2>18</h2>
+        <p>Sessions This Month</p>
+      </div>
+      <div class="card">
+        <div>🔥</div>
+        <h2>9,240</h2>
+        <p>Calories Burned</p>
+      </div>
+      <div class="card">
+        <div>⏱️</div>
+        <h2>21 hrs</h2>
+        <p>Total Training Time</p>
+      </div>
+      <div class="card">
+        <div>🎯</div>
+        <h2>85%</h2>
+        <p>Goal Progress</p>
+      </div>
+    </div>
+
+    <!-- UPCOMING SESSIONS -->
+    <section>
+      <h2>Upcoming Sessions</h2>
+      <p>Your next booked classes.</p>
+    </section>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Program</th>
+            <th>Trainer</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="table-row-selected">
+            <td>Mon, Apr 28</td><td>06:00 AM</td><td>💪 Strength Training</td><td>Marcus Reid</td><td><span style="color:#4ade80;font-weight:600;">Confirmed</span></td>
+          </tr>
+          <tr>
+            <td>Wed, Apr 30</td><td>08:00 AM</td><td>🧘 Yoga &amp; Flexibility</td><td>Liam Chen</td><td><span style="color:#4ade80;font-weight:600;">Confirmed</span></td>
+          </tr>
+          <tr>
+            <td>Fri, May 02</td><td>18:00 PM</td><td>🔥 HIIT Cardio</td><td>Sofia Alvarez</td><td><span style="color:#facc15;font-weight:600;">Pending</span></td>
+          </tr>
+          <tr>
+            <td>Sat, May 03</td><td>10:00 AM</td><td>🏃 CrossFit</td><td>Jake Morrison</td><td><span style="color:#4ade80;font-weight:600;">Confirmed</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- PROGRESS LOG -->
+    <section>
+      <h2>Monthly Progress Log</h2>
+      <p>Your performance metrics for April 2026.</p>
+    </section>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Week</th>
+            <th>Sessions</th>
+            <th>Calories</th>
+            <th>Avg Duration</th>
+            <th>Weight (kg)</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Week 1</td><td>4</td><td>2,100</td><td>58 min</td><td>82.5</td><td>Great consistency</td></tr>
+          <tr><td>Week 2</td><td>5</td><td>2,400</td><td>62 min</td><td>81.8</td><td>PR on deadlift</td></tr>
+          <tr><td>Week 3</td><td>4</td><td>2,280</td><td>60 min</td><td>81.2</td><td>Slightly fatigued</td></tr>
+          <tr><td>Week 4</td><td>5</td><td>2,460</td><td>65 min</td><td>80.6</td><td>Best week yet!</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- QUICK LINKS -->
+    <section>
+      <h2>Quick Actions</h2>
+      <div>
+        <button onclick="location.href='schedule.html'">📅 Book a Class</button>
+        <button onclick="location.href='services.html'" class="border-button">📋 View Programs</button>
+        <button onclick="location.href='trainers.html'" class="border-button">👨‍💼 Find a Trainer</button>
+        <button onclick="location.href='pricing.html'" class="border-button">💳 Manage Plan</button>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="footer-container">
+      <div>
+        <h1>Fit<span class="accent">Pro</span></h1>
+        <p>Train Hard. Live Strong.</p>
+      </div>
+      <div>
+        <h2>Navigate</h2>
+        <a href="../index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="services.html">Programs</a>
+        <a href="trainers.html">Trainers</a>
+      </div>
+      <div>
+        <h2>More</h2>
+        <a href="pricing.html">Pricing</a>
+        <a href="schedule.html">Schedule</a>
+        <a href="contact.html">Contact</a>
+        <a href="dashboard.html">Dashboard</a>
+      </div>
+      <div>
+        <h2>Contact Us</h2>
+        <p>📍 123 Fitness Ave, Sports City</p>
+        <p>📞 +1 (555) 987-6543</p>
+        <p>✉️ hello@fitpro.com</p>
+      </div>
+    </div>
+    <p>© 2026 FitPro. All rights reserved.</p>
+  </footer>
+
+  <script src="../jsFile/jsFunctions.js"></script>
+</body>
+</html>

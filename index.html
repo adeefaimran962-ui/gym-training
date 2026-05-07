@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="FitPro — Professional gym &amp; fitness trainer website. Training programs, expert trainers, and flexible pricing.">
+  <title>FitPro — Train Hard. Live Strong.</title>
+  <link rel="stylesheet" href="cssFile/globalStyles.css">
+</head>
+<body data-theme="dark">
+
+  <nav>
+    <a href="index.html">Fit<span class="accent">Pro</span></a>
+    <button class="menu-toggle" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="pages/about.html">About</a></li>
+      <li class="dropdown">
+        <a href="#">Programs ▾</a>
+        <div class="dropdown-menu">
+          <a href="pages/services.html">All Programs</a>
+          <a href="pages/schedule.html">Schedule</a>
+        </div>
+      </li>
+      <li><a href="pages/contact.html">Contact</a></li>
+      <li><a href="pages/login.html">Login</a></li>
+      <li><button onclick="location.href='pages/signup.html'">Join Now</button></li>
+      <li><button id="theme-toggle" onclick="toggleTheme()">🌙</button></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <h4>Welcome to FitPro</h4>
+    <h1>Transform Your Body,<br><span class="accent">Transform Your Life</span></h1>
+    <p>Join thousands of members achieving real results with expert trainers, personalized programs, and a community that keeps you going.</p>
+    <div>
+      <button class="lg-button" onclick="location.href='pages/signup.html'">Start Your Journey</button>
+      <a class="link-button lg-button" href="pages/services.html">Explore Programs</a>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section>
+    <div>
+      <div><h2>500+</h2><p>Active Members</p></div>
+      <div><h2>20+</h2><p>Training Programs</p></div>
+      <div><h2>15+</h2><p>Expert Trainers</p></div>
+      <div><h2>5 ★</h2><p>Average Rating</p></div>
+    </div>
+  </section>
+
+  <main class="page">
+
+    <!-- FEATURED PROGRAMS -->
+    <section>
+      <h4>What We Offer</h4>
+      <h2>Featured Training Programs</h2>
+      <p>Designed by experts. Engineered for results.</p>
+    </section>
+    <div class="card-container">
+      <div class="card">
+        <div>💪</div>
+        <h3>Strength Training</h3>
+        <p>Build raw power and muscle with progressive overload techniques guided by certified strength coaches.</p>
+        <a href="pages/services.html">Learn More →</a>
+      </div>
+      <div class="card">
+        <div>🔥</div>
+        <h3>HIIT Cardio</h3>
+        <p>High-intensity intervals to torch fat, boost metabolism, and improve cardiovascular endurance fast.</p>
+        <a href="pages/services.html">Learn More →</a>
+      </div>
+      <div class="card">
+        <div>🧘</div>
+        <h3>Yoga &amp; Flexibility</h3>
+        <p>Restore balance, enhance mobility, and reduce stress with our mindful yoga and stretching sessions.</p>
+        <a href="pages/services.html">Learn More →</a>
+      </div>
+    </div>
+
+    <!-- WHY FITPRO -->
+    <section>
+      <h4>Why Choose Us</h4>
+      <h2>The FitPro Difference</h2>
+    </section>
+    <div class="card-container">
+      <div class="card">
+        <div>🎯</div>
+        <h3>Personalized Plans</h3>
+        <p>Every member gets a custom workout and nutrition plan tailored to their specific goals and fitness level.</p>
+      </div>
+      <div class="card">
+        <div>🏆</div>
+        <h3>Certified Trainers</h3>
+        <p>All trainers hold industry-recognised certifications with 5+ years of real-world coaching experience.</p>
+      </div>
+      <div class="card">
+        <div>📊</div>
+        <h3>Progress Tracking</h3>
+        <p>Monitor your gains and stay motivated with our integrated dashboard and detailed progress reports.</p>
+      </div>
+    </div>
+
+    <!-- TRAINER SPOTLIGHT -->
+    <section>
+      <h4>Meet the Team</h4>
+      <h2>Our Expert Trainers</h2>
+    </section>
+
+    <div class="card-container">
+
+      <div class="card">
+        <img src="/sources/img1.jpeg" alt="Marcus Reid">
+        <h3>Marcus Reid</h3>
+        <h4>Strength &amp; Power</h4>
+        <p>10 years coaching elite athletes in powerlifting and functional strength.</p>
+        <a href="#">View Profile →</a>
+      </div>
+
+      <div class="card">
+        <img src="/sources/img2.jpeg" alt="Sofia Alvarez">
+        <h3>Sofia Alvarez</h3>
+        <h4>HIIT &amp; Cardio</h4>
+        <p>Former national athlete, expert in high-performance cardio conditioning.</p>
+        <a href="#">View Profile →</a>
+      </div>
+
+      <div class="card">
+        <img src="/sources/img3.jpeg" alt="Liam Chen">
+        <h3>Liam Chen</h3>
+        <h4>Yoga &amp; Wellness</h4>
+        <p>Certified yoga instructor passionate about holistic wellness and mindfulness.</p>
+        <a href="#">View Profile →</a>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- CTA BANNER -->
+  <section>
+    <h2>Ready to Start Your Fitness Journey?</h2>
+    <p>Join FitPro today and get your first week free. No contracts. No excuses.</p>
+    <button class="lg-button" onclick="location.href='pages/signup.html'">Get Started Free</button>
+  </section>
+
+  <footer>
+    <div class="footer-container">
+      <div>
+        <h1>Fit<span class="accent">Pro</span></h1>
+        <p>Train Hard. Live Strong.<br>Your peak fitness journey starts here.</p>
+      </div>
+      <div>
+        <h2>Navigate</h2>
+        <a href="index.html">Home</a>
+        <a href="pages/about.html">About</a>
+        <a href="pages/services.html">Programs</a>
+        <a href="pages/trainers.html">Trainers</a>
+      </div>
+      <div>
+        <h2>More</h2>
+        <a href="pages/pricing.html">Pricing</a>
+        <a href="pages/schedule.html">Schedule</a>
+        <a href="pages/contact.html">Contact</a>
+        <a href="pages/dashboard.html">Dashboard</a>
+      </div>
+      <div>
+        <h2>Contact Us</h2>
+        <p>📍 123 Fitness Ave, Sports City</p>
+        <p>📞 +1 (555) 987-6543</p>
+        <p>✉️ hello@fitpro.com</p>
+      </div>
+    </div>
+    <p>© 2026 FitPro. All rights reserved.</p>
+  </footer>
+
+  <script src="jsFile/jsFunctions.js"></script>
+</body>
+</html>
