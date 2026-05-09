@@ -3,9 +3,176 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="FitPro member dashboard — view your stats, training history, and upcoming sessions.">
+  <meta name="description" content="FitPro Admin Dashboard — manage gym stock inventory with full CRUD operations and graphical reports.">
   <title>Dashboard | FitPro</title>
   <link rel="stylesheet" href="../cssFile/globalStyles.css">
+  <style>
+    /* ── Dashboard-specific overrides ── */
+    .dash-hero {
+      background: linear-gradient(135deg, #1A1A2E, #0F3460);
+      padding: 48px 40px 36px;
+      border-bottom: 3px solid var(--brand-primary-color);
+    }
+    .dash-hero h4 { color: var(--text-secondary-color); }
+    .dash-hero h1 { color: #fff; margin-bottom: 6px; }
+    .dash-hero p  { color: #aaa; margin: 0; }
+
+    /* Action Cards Grid */
+    .action-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      margin: 36px 0;
+    }
+    .action-card {
+      flex: 1 1 220px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-muted-color);
+      border-radius: var(--radius-md);
+      padding: 28px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+      cursor: pointer;
+      transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+      text-decoration: none;
+      color: inherit;
+    }
+    .action-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 40px rgba(255,107,53,0.22);
+      border-color: var(--brand-primary-color);
+      background: none;
+    }
+    .action-card .icon {
+      font-size: 2.2rem;
+      width: 58px;
+      height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 14px;
+      flex-shrink: 0;
+    }
+    .icon-view   { background: rgba(99,179,237,0.15); }
+    .icon-delete { background: rgba(252,129,129,0.15); }
+    .icon-update { background: rgba(104,211,145,0.15); }
+    .icon-insert { background: rgba(246,173,85,0.15); }
+
+    .action-card h3 { margin: 0; font-size: 1.1rem; }
+    .action-card p  { margin: 0; font-size: 0.875rem; color: var(--text-muted-color); line-height: 1.5; }
+    .action-card .badge {
+      margin-top: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--brand-primary-color);
+      letter-spacing: 0.5px;
+      padding-top: 8px;
+    }
+    .action-card .badge::after { content: '→'; }
+
+    /* Chart Section */
+    .chart-section {
+      background: var(--bg-card);
+      border: 1px solid var(--border-muted-color);
+      border-radius: var(--radius-md);
+      padding: 32px;
+      margin-bottom: 40px;
+    }
+    .chart-section h2 { margin-bottom: 4px; }
+    .chart-section > p { margin-bottom: 24px; color: var(--text-muted-color); font-size: 0.9rem; }
+
+    /* Chart Tabs */
+    .chart-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .chart-tab {
+      padding: 7px 18px;
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-muted-color);
+      background: transparent;
+      color: var(--text-secondary-color);
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+    .chart-tab.active, .chart-tab:hover {
+      background: var(--brand-primary-color);
+      color: #fff;
+      border-color: var(--brand-primary-color);
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* Canvas wrapper */
+    .chart-wrap {
+      position: relative;
+      width: 100%;
+      height: 300px;
+    }
+    canvas#stockChart { width: 100% !important; height: 100% !important; }
+
+    /* Summary row below chart */
+    .chart-summary {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border-muted-color);
+    }
+    .chart-summary-item {
+      flex: 1 1 140px;
+      text-align: center;
+    }
+    .chart-summary-item .val {
+      font-family: 'Barlow', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: var(--brand-primary-color);
+      display: block;
+    }
+    .chart-summary-item .lbl {
+      font-size: 0.8rem;
+      color: var(--text-muted-color);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Recent Stock Table Section */
+    .recent-section h2 { margin-bottom: 4px; }
+    .recent-section > p { margin-bottom: 16px; color: var(--text-muted-color); font-size: 0.9rem; }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      font-family: 'Barlow', sans-serif;
+    }
+    .status-in    { background: rgba(74,222,128,0.15); color: #4ade80; }
+    .status-low   { background: rgba(250,204,21,0.15);  color: #facc15; }
+    .status-out   { background: rgba(248,113,113,0.15); color: #f87171; }
+
+    @media (max-width: 768px) {
+      .dash-hero { padding: 36px 20px 28px; }
+      .action-card { flex: 1 1 100%; }
+      .chart-section { padding: 20px 16px; }
+    }
+  </style>
 </head>
 <body data-theme="dark">
 
@@ -22,117 +189,167 @@
           <a href="schedule.html">Schedule</a>
         </div>
       </li>
-      <li><a href="trainers.html">Trainers</a></li>
-      <li><a href="pricing.html">Pricing</a></li>
       <li><a href="contact.html">Contact</a></li>
       <li><a href="login.html">Login</a></li>
+      <li><a href="dashboard.html" class="accent" style="font-weight:800;">Dashboard</a></li>
       <li><button onclick="location.href='signup.html'">Join Now</button></li>
       <li><button id="theme-toggle" onclick="toggleTheme()">🌙</button></li>
     </ul>
   </nav>
 
+  <!-- DASH HERO -->
+  <div class="dash-hero">
+    <h4>Admin Panel</h4>
+    <h1>Stock <span class="accent">Dashboard</span> 📦</h1>
+    <p>Manage your gym inventory — view, insert, update, and delete stock records with ease.</p>
+  </div>
+
   <main class="page">
 
-    <!-- WELCOME -->
+    <!-- ── 1-4: ACTION CARDS ── -->
     <section>
-      <h4>Member Dashboard</h4>
-      <h1>Welcome back, <span class="accent">John</span> 👋</h1>
-      <p>Here's a summary of your fitness journey this month.</p>
+      <h4>Quick Actions</h4>
+      <h2>Manage Stock</h2>
     </section>
 
-    <!-- STAT CARDS -->
-    <div class="card-container" id="stat-cards">
-      <div class="card">
-        <div>🏋️</div>
-        <h2>18</h2>
-        <p>Sessions This Month</p>
+    <div class="action-grid">
+
+      <!-- View All Stock -->
+      <a href="#stock-table" class="action-card" id="card-view">
+        <div class="icon icon-view">📋</div>
+        <h3>View All Stock</h3>
+        <p>Browse the complete inventory list with real-time quantities and status filters.</p>
+        <span class="badge">View Records</span>
+      </a>
+
+      <!-- Delete Stock -->
+      <div class="action-card" id="card-delete" onclick="handleDelete()">
+        <div class="icon icon-delete">🗑️</div>
+        <h3>Delete Stock</h3>
+        <p>Remove obsolete or discontinued items permanently from the inventory database.</p>
+        <span class="badge">Delete Record</span>
       </div>
-      <div class="card">
-        <div>🔥</div>
-        <h2>9,240</h2>
-        <p>Calories Burned</p>
+
+      <!-- Update Stock -->
+      <div class="action-card" id="card-update" onclick="handleUpdate()">
+        <div class="icon icon-update">✏️</div>
+        <h3>Update Stock</h3>
+        <p>Edit quantities, prices, or details of existing stock items to keep records accurate.</p>
+        <span class="badge">Edit Record</span>
       </div>
-      <div class="card">
-        <div>⏱️</div>
-        <h2>21 hrs</h2>
-        <p>Total Training Time</p>
+
+      <!-- Insert New Stock -->
+      <div class="action-card" id="card-insert" onclick="handleInsert()">
+        <div class="icon icon-insert">➕</div>
+        <h3>Insert New Stock</h3>
+        <p>Add a brand-new product or equipment entry directly into the inventory system.</p>
+        <span class="badge">Add Record</span>
       </div>
-      <div class="card">
-        <div>🎯</div>
-        <h2>85%</h2>
-        <p>Goal Progress</p>
+
+    </div>
+
+    <!-- ── 5: GRAPHICAL VIEW ── -->
+    <div class="chart-section">
+      <h2>📊 Stock Overview — Graphical View</h2>
+      <p>Visual representation of current inventory levels and monthly stock movement.</p>
+
+      <div class="chart-tabs">
+        <button class="chart-tab active" onclick="switchChart('bar', this)">Bar Chart</button>
+        <button class="chart-tab" onclick="switchChart('line', this)">Line Chart</button>
+        <button class="chart-tab" onclick="switchChart('doughnut', this)">Doughnut</button>
+      </div>
+
+      <div class="chart-wrap">
+        <canvas id="stockChart"></canvas>
+      </div>
+
+      <div class="chart-summary">
+        <div class="chart-summary-item">
+          <span class="val">248</span>
+          <span class="lbl">Total Items</span>
+        </div>
+        <div class="chart-summary-item">
+          <span class="val">6</span>
+          <span class="lbl">Categories</span>
+        </div>
+        <div class="chart-summary-item">
+          <span class="val">12</span>
+          <span class="lbl">Low Stock</span>
+        </div>
+        <div class="chart-summary-item">
+          <span class="val">3</span>
+          <span class="lbl">Out of Stock</span>
+        </div>
+        <div class="chart-summary-item">
+          <span class="val">$18,450</span>
+          <span class="lbl">Total Value</span>
+        </div>
       </div>
     </div>
 
-    <!-- UPCOMING SESSIONS -->
-    <section>
-      <h2>Upcoming Sessions</h2>
-      <p>Your next booked classes.</p>
-    </section>
-    <div class="table-container">
-      <table>
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Time</th>
-            <th>Program</th>
-            <th>Trainer</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="table-row-selected">
-            <td>Mon, Apr 28</td><td>06:00 AM</td><td>💪 Strength Training</td><td>Marcus Reid</td><td><span style="color:#4ade80;font-weight:600;">Confirmed</span></td>
-          </tr>
-          <tr>
-            <td>Wed, Apr 30</td><td>08:00 AM</td><td>🧘 Yoga &amp; Flexibility</td><td>Liam Chen</td><td><span style="color:#4ade80;font-weight:600;">Confirmed</span></td>
-          </tr>
-          <tr>
-            <td>Fri, May 02</td><td>18:00 PM</td><td>🔥 HIIT Cardio</td><td>Sofia Alvarez</td><td><span style="color:#facc15;font-weight:600;">Pending</span></td>
-          </tr>
-          <tr>
-            <td>Sat, May 03</td><td>10:00 AM</td><td>🏃 CrossFit</td><td>Jake Morrison</td><td><span style="color:#4ade80;font-weight:600;">Confirmed</span></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- PROGRESS LOG -->
-    <section>
-      <h2>Monthly Progress Log</h2>
-      <p>Your performance metrics for April 2026.</p>
-    </section>
-    <div class="table-container">
-      <table>
-        <thead>
-          <tr>
-            <th>Week</th>
-            <th>Sessions</th>
-            <th>Calories</th>
-            <th>Avg Duration</th>
-            <th>Weight (kg)</th>
-            <th>Notes</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td>Week 1</td><td>4</td><td>2,100</td><td>58 min</td><td>82.5</td><td>Great consistency</td></tr>
-          <tr><td>Week 2</td><td>5</td><td>2,400</td><td>62 min</td><td>81.8</td><td>PR on deadlift</td></tr>
-          <tr><td>Week 3</td><td>4</td><td>2,280</td><td>60 min</td><td>81.2</td><td>Slightly fatigued</td></tr>
-          <tr><td>Week 4</td><td>5</td><td>2,460</td><td>65 min</td><td>80.6</td><td>Best week yet!</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- QUICK LINKS -->
-    <section>
-      <h2>Quick Actions</h2>
-      <div>
-        <button onclick="location.href='schedule.html'">📅 Book a Class</button>
-        <button onclick="location.href='services.html'" class="border-button">📋 View Programs</button>
-        <button onclick="location.href='trainers.html'" class="border-button">👨‍💼 Find a Trainer</button>
-        <button onclick="location.href='pricing.html'" class="border-button">💳 Manage Plan</button>
+    <!-- ── STOCK TABLE ── -->
+    <div class="recent-section" id="stock-table">
+      <h2>Recent Stock Records</h2>
+      <p>Latest inventory entries — click a row to select it for update or delete.</p>
+      <div class="table-container">
+        <table id="inventoryTable">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Item Name</th>
+              <th>Category</th>
+              <th>Qty</th>
+              <th>Unit Price</th>
+              <th>Last Updated</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody">
+            <tr onclick="selectRow(this)">
+              <td>001</td><td>Dumbbells Set (5–50 kg)</td><td>Weights</td><td>30</td><td>$420</td><td>2026-05-07</td>
+              <td><span class="status-badge status-in">● In Stock</span></td>
+            </tr>
+            <tr onclick="selectRow(this)">
+              <td>002</td><td>Resistance Bands Pack</td><td>Accessories</td><td>8</td><td>$35</td><td>2026-05-06</td>
+              <td><span class="status-badge status-low">● Low Stock</span></td>
+            </tr>
+            <tr onclick="selectRow(this)">
+              <td>003</td><td>Treadmill Pro X500</td><td>Cardio</td><td>5</td><td>$2,100</td><td>2026-05-05</td>
+              <td><span class="status-badge status-in">● In Stock</span></td>
+            </tr>
+            <tr onclick="selectRow(this)">
+              <td>004</td><td>Yoga Mat Premium</td><td>Accessories</td><td>0</td><td>$28</td><td>2026-05-04</td>
+              <td><span class="status-badge status-out">● Out of Stock</span></td>
+            </tr>
+            <tr onclick="selectRow(this)">
+              <td>005</td><td>Pull-Up Bar (Wall Mount)</td><td>Strength</td><td>14</td><td>$95</td><td>2026-05-03</td>
+              <td><span class="status-badge status-in">● In Stock</span></td>
+            </tr>
+            <tr onclick="selectRow(this)">
+              <td>006</td><td>Kettlebell 20 kg</td><td>Weights</td><td>3</td><td>$60</td><td>2026-05-01</td>
+              <td><span class="status-badge status-low">● Low Stock</span></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-    </section>
+    </div>
+
+    <!-- ── MODAL: Insert / Update ── -->
+    <div id="modal-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:2000;align-items:center;justify-content:center;">
+      <div style="background:var(--bg-card);border:1px solid var(--border-muted-color);border-radius:var(--radius-md);padding:36px;max-width:460px;width:90%;position:relative;">
+        <h2 id="modal-title" style="margin-bottom:20px;">Add Stock</h2>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div><label>Item Name</label><input type="text" id="f-name" placeholder="e.g. Barbell 20 kg"></div>
+          <div><label>Category</label><input type="text" id="f-cat" placeholder="e.g. Weights"></div>
+          <div><label>Quantity</label><input type="number" id="f-qty" placeholder="e.g. 10" min="0"></div>
+          <div><label>Unit Price ($)</label><input type="number" id="f-price" placeholder="e.g. 150" min="0"></div>
+        </div>
+        <div style="display:flex;gap:12px;margin-top:24px;">
+          <button id="modal-save-btn" onclick="saveRecord()" style="flex:1;">Save</button>
+          <button onclick="closeModal()" style="flex:1;background:transparent;color:var(--brand-primary-color);">Cancel</button>
+        </div>
+      </div>
+    </div>
 
   </main>
 
@@ -167,5 +384,201 @@
   </footer>
 
   <script src="../jsFile/jsFunctions.js"></script>
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script>
+    /* ─── Chart Data ─── */
+    const labels = ['Weights','Cardio','Strength','Accessories','Recovery','Nutrition'];
+    const stockQty   = [65, 42, 38, 55, 28, 20];
+    const stockValue = [12000, 18000, 5500, 3200, 1800, 950];
+
+    const ORANGE  = 'rgba(255,107,53,0.85)';
+    const RED     = 'rgba(233,69,96,0.85)';
+    const BLUE    = 'rgba(99,179,237,0.85)';
+    const GREEN   = 'rgba(104,211,145,0.85)';
+    const YELLOW  = 'rgba(246,173,85,0.85)';
+    const PURPLE  = 'rgba(159,122,234,0.85)';
+    const PALETTE = [ORANGE, RED, BLUE, GREEN, YELLOW, PURPLE];
+
+    const isDark = () => document.body.getAttribute('data-theme') === 'dark';
+    const gridColor = () => isDark() ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.07)';
+    const tickColor = () => isDark() ? '#aaa' : '#555';
+
+    let myChart = null;
+
+    function buildChartConfig(type) {
+      if (type === 'doughnut') {
+        return {
+          type: 'doughnut',
+          data: {
+            labels,
+            datasets: [{
+              data: stockQty,
+              backgroundColor: PALETTE,
+              borderWidth: 2,
+              borderColor: isDark() ? '#1A1A2E' : '#fff'
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { position: 'right', labels: { color: tickColor(), font: { family: 'Barlow', weight: '700', size: 13 }, padding: 16 } },
+              tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ${ctx.parsed} units` } }
+            }
+          }
+        };
+      }
+      return {
+        type,
+        data: {
+          labels,
+          datasets: [
+            {
+              label: 'Qty in Stock',
+              data: stockQty,
+              backgroundColor: type === 'bar' ? PALETTE : 'rgba(255,107,53,0.15)',
+              borderColor: ORANGE,
+              borderWidth: 2,
+              tension: 0.4,
+              fill: type === 'line',
+              pointBackgroundColor: ORANGE,
+              pointRadius: 5
+            },
+            {
+              label: 'Stock Value ($00s)',
+              data: stockValue.map(v => Math.round(v / 100)),
+              backgroundColor: type === 'bar' ? 'rgba(233,69,96,0.6)' : 'rgba(233,69,96,0.1)',
+              borderColor: RED,
+              borderWidth: 2,
+              tension: 0.4,
+              fill: type === 'line',
+              pointBackgroundColor: RED,
+              pointRadius: 5
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: { mode: 'index', intersect: false },
+          plugins: {
+            legend: { labels: { color: tickColor(), font: { family: 'Barlow', weight: '700' }, padding: 16 } },
+            tooltip: { bodyFont: { family: 'Inter' }, titleFont: { family: 'Barlow', weight: '700' } }
+          },
+          scales: {
+            x: { ticks: { color: tickColor(), font: { family: 'Barlow', weight: '600' } }, grid: { color: gridColor() } },
+            y: { ticks: { color: tickColor(), font: { family: 'Inter' } }, grid: { color: gridColor() }, beginAtZero: true }
+          }
+        }
+      };
+    }
+
+    function renderChart(type) {
+      if (myChart) myChart.destroy();
+      const ctx = document.getElementById('stockChart').getContext('2d');
+      myChart = new Chart(ctx, buildChartConfig(type));
+    }
+
+    function switchChart(type, btn) {
+      document.querySelectorAll('.chart-tab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderChart(type);
+    }
+
+    /* Init */
+    document.addEventListener('DOMContentLoaded', () => renderChart('bar'));
+
+    /* ─── Row Selection ─── */
+    let selectedRow = null;
+    function selectRow(row) {
+      if (selectedRow) selectedRow.classList.remove('table-row-selected');
+      selectedRow = row;
+      row.classList.add('table-row-selected');
+    }
+
+    /* ─── CRUD Handlers ─── */
+    let editMode = false;
+
+    function openModal(title, prefill) {
+      document.getElementById('modal-title').textContent = title;
+      document.getElementById('f-name').value  = prefill.name  || '';
+      document.getElementById('f-cat').value   = prefill.cat   || '';
+      document.getElementById('f-qty').value   = prefill.qty   || '';
+      document.getElementById('f-price').value = prefill.price || '';
+      const ov = document.getElementById('modal-overlay');
+      ov.style.display = 'flex';
+    }
+    function closeModal() {
+      document.getElementById('modal-overlay').style.display = 'none';
+      editMode = false;
+    }
+
+    function handleInsert() {
+      editMode = false;
+      openModal('➕ Insert New Stock', {});
+    }
+
+    function handleUpdate() {
+      if (!selectedRow) { alert('⚠️ Please click a row in the table to select a stock item first.'); return; }
+      editMode = true;
+      const cells = selectedRow.querySelectorAll('td');
+      openModal('✏️ Update Stock Record', {
+        name:  cells[1].textContent,
+        cat:   cells[2].textContent,
+        qty:   cells[3].textContent,
+        price: cells[4].textContent.replace(/[$,]/g, '')
+      });
+    }
+
+    function handleDelete() {
+      if (!selectedRow) { alert('⚠️ Please click a row in the table to select a stock item first.'); return; }
+      const name = selectedRow.querySelectorAll('td')[1].textContent;
+      if (confirm(`🗑️ Delete "${name}" from stock? This cannot be undone.`)) {
+        selectedRow.style.transition = 'opacity 0.4s';
+        selectedRow.style.opacity = '0';
+        setTimeout(() => { selectedRow.remove(); selectedRow = null; }, 400);
+      }
+    }
+
+    function saveRecord() {
+      const name  = document.getElementById('f-name').value.trim();
+      const cat   = document.getElementById('f-cat').value.trim();
+      const qty   = document.getElementById('f-qty').value.trim();
+      const price = document.getElementById('f-price').value.trim();
+      if (!name || !cat || !qty || !price) { alert('Please fill in all fields.'); return; }
+
+      const tbody = document.getElementById('tableBody');
+      const today = new Date().toISOString().split('T')[0];
+      const status = qty == 0 ? 'status-out' : qty < 5 ? 'status-low' : 'status-in';
+      const statusText = qty == 0 ? '● Out of Stock' : qty < 5 ? '● Low Stock' : '● In Stock';
+
+      if (editMode && selectedRow) {
+        const cells = selectedRow.querySelectorAll('td');
+        cells[1].textContent = name;
+        cells[2].textContent = cat;
+        cells[3].textContent = qty;
+        cells[4].textContent = '$' + price;
+        cells[5].textContent = today;
+        cells[6].innerHTML = `<span class="status-badge ${status}">${statusText}</span>`;
+      } else {
+        const rows = tbody.querySelectorAll('tr').length;
+        const id   = String(rows + 1).padStart(3, '0');
+        const tr   = document.createElement('tr');
+        tr.setAttribute('onclick', 'selectRow(this)');
+        tr.innerHTML = `
+          <td>${id}</td><td>${name}</td><td>${cat}</td><td>${qty}</td>
+          <td>$${price}</td><td>${today}</td>
+          <td><span class="status-badge ${status}">${statusText}</span></td>`;
+        tbody.appendChild(tr);
+      }
+      closeModal();
+    }
+
+    /* Close modal on overlay click */
+    document.getElementById('modal-overlay').addEventListener('click', function(e) {
+      if (e.target === this) closeModal();
+    });
+  </script>
 </body>
 </html>
