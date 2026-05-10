@@ -6,173 +6,7 @@
   <meta name="description" content="FitPro Admin Dashboard — manage gym stock inventory with full CRUD operations and graphical reports.">
   <title>Dashboard | FitPro</title>
   <link rel="stylesheet" href="../cssFile/globalStyles.css">
-  <style>
-    /* ── Dashboard-specific overrides ── */
-    .dash-hero {
-      background: linear-gradient(135deg, #1A1A2E, #0F3460);
-      padding: 48px 40px 36px;
-      border-bottom: 3px solid var(--brand-primary-color);
-    }
-    .dash-hero h4 { color: var(--text-secondary-color); }
-    .dash-hero h1 { color: #fff; margin-bottom: 6px; }
-    .dash-hero p  { color: #aaa; margin: 0; }
 
-    /* Action Cards Grid */
-    .action-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 24px;
-      margin: 36px 0;
-    }
-    .action-card {
-      flex: 1 1 220px;
-      background: var(--bg-card);
-      border: 1px solid var(--border-muted-color);
-      border-radius: var(--radius-md);
-      padding: 28px 24px;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 12px;
-      cursor: pointer;
-      transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
-      text-decoration: none;
-      color: inherit;
-    }
-    .action-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 16px 40px rgba(255,107,53,0.22);
-      border-color: var(--brand-primary-color);
-      background: none;
-    }
-    .action-card .icon {
-      font-size: 2.2rem;
-      width: 58px;
-      height: 58px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 14px;
-      flex-shrink: 0;
-    }
-    .icon-view   { background: rgba(99,179,237,0.15); }
-    .icon-delete { background: rgba(252,129,129,0.15); }
-    .icon-update { background: rgba(104,211,145,0.15); }
-    .icon-insert { background: rgba(246,173,85,0.15); }
-
-    .action-card h3 { margin: 0; font-size: 1.1rem; }
-    .action-card p  { margin: 0; font-size: 0.875rem; color: var(--text-muted-color); line-height: 1.5; }
-    .action-card .badge {
-      margin-top: auto;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-family: 'Barlow', sans-serif;
-      font-size: 0.8rem;
-      font-weight: 700;
-      color: var(--brand-primary-color);
-      letter-spacing: 0.5px;
-      padding-top: 8px;
-    }
-    .action-card .badge::after { content: '→'; }
-
-    /* Chart Section */
-    .chart-section {
-      background: var(--bg-card);
-      border: 1px solid var(--border-muted-color);
-      border-radius: var(--radius-md);
-      padding: 32px;
-      margin-bottom: 40px;
-    }
-    .chart-section h2 { margin-bottom: 4px; }
-    .chart-section > p { margin-bottom: 24px; color: var(--text-muted-color); font-size: 0.9rem; }
-
-    /* Chart Tabs */
-    .chart-tabs {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
-    }
-    .chart-tab {
-      padding: 7px 18px;
-      font-family: 'Barlow', sans-serif;
-      font-size: 0.85rem;
-      font-weight: 700;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border-muted-color);
-      background: transparent;
-      color: var(--text-secondary-color);
-      cursor: pointer;
-      transition: all var(--transition);
-    }
-    .chart-tab.active, .chart-tab:hover {
-      background: var(--brand-primary-color);
-      color: #fff;
-      border-color: var(--brand-primary-color);
-      transform: none;
-      box-shadow: none;
-    }
-
-    /* Canvas wrapper */
-    .chart-wrap {
-      position: relative;
-      width: 100%;
-      height: 300px;
-    }
-    canvas#stockChart { width: 100% !important; height: 100% !important; }
-
-    /* Summary row below chart */
-    .chart-summary {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 16px;
-      margin-top: 24px;
-      padding-top: 20px;
-      border-top: 1px solid var(--border-muted-color);
-    }
-    .chart-summary-item {
-      flex: 1 1 140px;
-      text-align: center;
-    }
-    .chart-summary-item .val {
-      font-family: 'Barlow', sans-serif;
-      font-size: 1.6rem;
-      font-weight: 900;
-      color: var(--brand-primary-color);
-      display: block;
-    }
-    .chart-summary-item .lbl {
-      font-size: 0.8rem;
-      color: var(--text-muted-color);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    /* Recent Stock Table Section */
-    .recent-section h2 { margin-bottom: 4px; }
-    .recent-section > p { margin-bottom: 16px; color: var(--text-muted-color); font-size: 0.9rem; }
-
-    .status-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      padding: 3px 10px;
-      border-radius: 20px;
-      font-size: 0.78rem;
-      font-weight: 700;
-      font-family: 'Barlow', sans-serif;
-    }
-    .status-in    { background: rgba(74,222,128,0.15); color: #4ade80; }
-    .status-low   { background: rgba(250,204,21,0.15);  color: #facc15; }
-    .status-out   { background: rgba(248,113,113,0.15); color: #f87171; }
-
-    @media (max-width: 768px) {
-      .dash-hero { padding: 36px 20px 28px; }
-      .action-card { flex: 1 1 100%; }
-      .chart-section { padding: 20px 16px; }
-    }
-  </style>
 </head>
 <body data-theme="dark">
 
@@ -191,7 +25,7 @@
       </li>
       <li><a href="contact.html">Contact</a></li>
       <li><a href="login.html">Login</a></li>
-      <li><a href="dashboard.html" class="accent" style="font-weight:800;">Dashboard</a></li>
+      <li><a href="dashboard.html" class="accent nav-active">Dashboard</a></li>
       <li><button onclick="location.href='signup.html'">Join Now</button></li>
       <li><button id="theme-toggle" onclick="toggleTheme()">🌙</button></li>
     </ul>
@@ -231,7 +65,7 @@
       </div>
 
       <!-- Update Stock -->
-      <div class="action-card" id="card-update" onclick="handleUpdate()">
+      <div class="action-card" id="card-update">
         <div class="icon icon-update">✏️</div>
         <h3>Update Stock</h3>
         <p>Edit quantities, prices, or details of existing stock items to keep records accurate.</p>
@@ -239,7 +73,7 @@
       </div>
 
       <!-- Insert New Stock -->
-      <div class="action-card" id="card-insert" onclick="handleInsert()">
+      <div class="action-card" id="card-insert">
         <div class="icon icon-insert">➕</div>
         <h3>Insert New Stock</h3>
         <p>Add a brand-new product or equipment entry directly into the inventory system.</p>
@@ -334,22 +168,7 @@
       </div>
     </div>
 
-    <!-- ── MODAL: Insert / Update ── -->
-    <div id="modal-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:2000;align-items:center;justify-content:center;">
-      <div style="background:var(--bg-card);border:1px solid var(--border-muted-color);border-radius:var(--radius-md);padding:36px;max-width:460px;width:90%;position:relative;">
-        <h2 id="modal-title" style="margin-bottom:20px;">Add Stock</h2>
-        <div style="display:flex;flex-direction:column;gap:12px;">
-          <div><label>Item Name</label><input type="text" id="f-name" placeholder="e.g. Barbell 20 kg"></div>
-          <div><label>Category</label><input type="text" id="f-cat" placeholder="e.g. Weights"></div>
-          <div><label>Quantity</label><input type="number" id="f-qty" placeholder="e.g. 10" min="0"></div>
-          <div><label>Unit Price ($)</label><input type="number" id="f-price" placeholder="e.g. 150" min="0"></div>
-        </div>
-        <div style="display:flex;gap:12px;margin-top:24px;">
-          <button id="modal-save-btn" onclick="saveRecord()" style="flex:1;">Save</button>
-          <button onclick="closeModal()" style="flex:1;background:transparent;color:var(--brand-primary-color);">Cancel</button>
-        </div>
-      </div>
-    </div>
+
 
   </main>
 
@@ -498,38 +317,6 @@
     }
 
     /* ─── CRUD Handlers ─── */
-    let editMode = false;
-
-    function openModal(title, prefill) {
-      document.getElementById('modal-title').textContent = title;
-      document.getElementById('f-name').value  = prefill.name  || '';
-      document.getElementById('f-cat').value   = prefill.cat   || '';
-      document.getElementById('f-qty').value   = prefill.qty   || '';
-      document.getElementById('f-price').value = prefill.price || '';
-      const ov = document.getElementById('modal-overlay');
-      ov.style.display = 'flex';
-    }
-    function closeModal() {
-      document.getElementById('modal-overlay').style.display = 'none';
-      editMode = false;
-    }
-
-    function handleInsert() {
-      editMode = false;
-      openModal('➕ Insert New Stock', {});
-    }
-
-    function handleUpdate() {
-      if (!selectedRow) { alert('⚠️ Please click a row in the table to select a stock item first.'); return; }
-      editMode = true;
-      const cells = selectedRow.querySelectorAll('td');
-      openModal('✏️ Update Stock Record', {
-        name:  cells[1].textContent,
-        cat:   cells[2].textContent,
-        qty:   cells[3].textContent,
-        price: cells[4].textContent.replace(/[$,]/g, '')
-      });
-    }
 
     function handleDelete() {
       if (!selectedRow) { alert('⚠️ Please click a row in the table to select a stock item first.'); return; }
@@ -540,45 +327,6 @@
         setTimeout(() => { selectedRow.remove(); selectedRow = null; }, 400);
       }
     }
-
-    function saveRecord() {
-      const name  = document.getElementById('f-name').value.trim();
-      const cat   = document.getElementById('f-cat').value.trim();
-      const qty   = document.getElementById('f-qty').value.trim();
-      const price = document.getElementById('f-price').value.trim();
-      if (!name || !cat || !qty || !price) { alert('Please fill in all fields.'); return; }
-
-      const tbody = document.getElementById('tableBody');
-      const today = new Date().toISOString().split('T')[0];
-      const status = qty == 0 ? 'status-out' : qty < 5 ? 'status-low' : 'status-in';
-      const statusText = qty == 0 ? '● Out of Stock' : qty < 5 ? '● Low Stock' : '● In Stock';
-
-      if (editMode && selectedRow) {
-        const cells = selectedRow.querySelectorAll('td');
-        cells[1].textContent = name;
-        cells[2].textContent = cat;
-        cells[3].textContent = qty;
-        cells[4].textContent = '$' + price;
-        cells[5].textContent = today;
-        cells[6].innerHTML = `<span class="status-badge ${status}">${statusText}</span>`;
-      } else {
-        const rows = tbody.querySelectorAll('tr').length;
-        const id   = String(rows + 1).padStart(3, '0');
-        const tr   = document.createElement('tr');
-        tr.setAttribute('onclick', 'selectRow(this)');
-        tr.innerHTML = `
-          <td>${id}</td><td>${name}</td><td>${cat}</td><td>${qty}</td>
-          <td>$${price}</td><td>${today}</td>
-          <td><span class="status-badge ${status}">${statusText}</span></td>`;
-        tbody.appendChild(tr);
-      }
-      closeModal();
-    }
-
-    /* Close modal on overlay click */
-    document.getElementById('modal-overlay').addEventListener('click', function(e) {
-      if (e.target === this) closeModal();
-    });
   </script>
 </body>
 </html>

@@ -477,6 +477,9 @@ footer h2 { font-size: 1rem; font-weight: 700; color: #fff; text-transform: uppe
 ========================================================= */
 .accent { color: var(--brand-primary-color); }
 
+/* Active nav link */
+.nav-active { font-weight: 800 !important; }
+
 /* =========================================================
    THEME TOGGLE BUTTON
 ========================================================= */
@@ -588,6 +591,179 @@ main + section > button:hover {
   background: var(--brand-accent-color);
   color: #fff;
   border-color: var(--brand-accent-color);
+}
+
+/* =========================================================
+   DASHBOARD PAGE
+========================================================= */
+
+/* Hero banner */
+.dash-hero {
+  background: linear-gradient(135deg, #1A1A2E, #0F3460);
+  padding: 48px 40px 36px;
+  border-bottom: 3px solid var(--brand-primary-color);
+}
+.dash-hero h4 { color: var(--text-secondary-color); }
+.dash-hero h1 { color: #fff; margin-bottom: 6px; }
+.dash-hero p  { color: #aaa; margin: 0; }
+
+/* Action Cards Grid */
+.action-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin: 36px 0;
+}
+.action-card {
+  flex: 1 1 220px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-muted-color);
+  border-radius: var(--radius-md);
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  cursor: pointer;
+  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+  text-decoration: none;
+  color: inherit;
+}
+.action-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 40px rgba(255,107,53,0.22);
+  border-color: var(--brand-primary-color);
+  background: none;
+}
+.action-card .icon {
+  font-size: 2.2rem;
+  width: 58px;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  flex-shrink: 0;
+}
+.icon-view   { background: rgba(99,179,237,0.15); }
+.icon-delete { background: rgba(252,129,129,0.15); }
+.icon-update { background: rgba(104,211,145,0.15); }
+.icon-insert { background: rgba(246,173,85,0.15); }
+
+.action-card h3 { margin: 0; font-size: 1.1rem; }
+.action-card p  { margin: 0; font-size: 0.875rem; color: var(--text-muted-color); line-height: 1.5; }
+.action-card .badge {
+  margin-top: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Barlow', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--brand-primary-color);
+  letter-spacing: 0.5px;
+  padding-top: 8px;
+}
+.action-card .badge::after { content: '→'; }
+
+/* Chart Section */
+.chart-section {
+  background: var(--bg-card);
+  border: 1px solid var(--border-muted-color);
+  border-radius: var(--radius-md);
+  padding: 32px;
+  margin-bottom: 40px;
+}
+.chart-section h2 { margin-bottom: 4px; }
+.chart-section > p { margin-bottom: 24px; color: var(--text-muted-color); font-size: 0.9rem; }
+
+/* Chart Tabs */
+.chart-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.chart-tab {
+  padding: 7px 18px;
+  font-family: 'Barlow', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-muted-color);
+  background: transparent;
+  color: var(--text-secondary-color);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.chart-tab.active,
+.chart-tab:hover {
+  background: var(--brand-primary-color);
+  color: #fff;
+  border-color: var(--brand-primary-color);
+  transform: none;
+  box-shadow: none;
+}
+
+/* Canvas wrapper */
+.chart-wrap {
+  position: relative;
+  width: 100%;
+  height: 300px;
+}
+canvas#stockChart { width: 100% !important; height: 100% !important; }
+
+/* Summary row below chart */
+.chart-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-muted-color);
+}
+.chart-summary-item {
+  flex: 1 1 140px;
+  text-align: center;
+}
+.chart-summary-item .val {
+  font-family: 'Barlow', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: var(--brand-primary-color);
+  display: block;
+}
+.chart-summary-item .lbl {
+  font-size: 0.8rem;
+  color: var(--text-muted-color);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Recent Stock Table Section */
+.recent-section h2 { margin-bottom: 4px; }
+.recent-section > p { margin-bottom: 16px; color: var(--text-muted-color); font-size: 0.9rem; }
+
+/* Status badges */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  font-family: 'Barlow', sans-serif;
+}
+.status-in  { background: rgba(74,222,128,0.15);  color: #4ade80; }
+.status-low { background: rgba(250,204,21,0.15);   color: #facc15; }
+.status-out { background: rgba(248,113,113,0.15);  color: #f87171; }
+
+/* Dashboard responsive */
+@media (max-width: 768px) {
+  .dash-hero   { padding: 36px 20px 28px; }
+  .action-card { flex: 1 1 100%; }
+  .chart-section { padding: 20px 16px; }
 }
 
 /* =========================================================
